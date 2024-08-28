@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
@@ -23,7 +22,6 @@ public class testAuto extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState, actionState;
     private String navigation;
-    private HuskyLens huskyLens;
 
     /** Create and Define Poses + Paths
      * Poses are built with three constructors: x, y, and heading (in Radians).
@@ -49,7 +47,7 @@ public class testAuto extends OpMode {
     // White Stack Cycle Poses + Path Chains
     private Pose TopTruss = new Pose(28, 84, Math.toRadians(270));
     private Pose BottomTruss = new Pose(28, 36, Math.toRadians(270));
-    private Pose Stack = new Pose(46, 11.5, Math.toRadians(270));
+    private final Pose Stack = new Pose(46, 11.5, Math.toRadians(270));
     private PathChain cycleStackTo, cycleStackBack, cycleStackToBezier;
 
     /** Generate Spike Mark and Backdrop Paths based off of the team element location **/
@@ -173,11 +171,6 @@ public class testAuto extends OpMode {
         autonomousPathUpdate();
         autonomousActionUpdate();
 
-        //Huskylens Setup
-        Deadline rateLimit = new Deadline(1, TimeUnit.SECONDS);
-        rateLimit.expire();
-        if (!huskyLens.knock()) { telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName()); }
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
 
         // Feedback to Driver Hub
         telemetry.addData("path state", pathState);
@@ -200,27 +193,11 @@ public class testAuto extends OpMode {
         follower.setStartingPose(startPose);
 
 
-        huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens");
     }
 
     /** This method is called continuously after Init while waiting for "play". **/
     @Override
     public void init_loop() {
-
-        // Scanning for Team Element
-        HuskyLens.Block[] blocks = huskyLens.blocks();
-        for (int i = 0; i < blocks.length; i++) {
-            //----------------------------1----------------------------\\
-            if (blocks[i].x <= 100 && blocks[i].id == 2) {
-                navigation = "left";
-            }
-            if (blocks[i].x > 100 && blocks[i].x <= 270 && blocks[i].id == 2) {
-                navigation = "middle";
-            }
-            if (blocks[i].x > 270 && blocks[i].id == 2) {
-                navigation = "right";
-            }
-        }
 
         // After 4 Seconds, Robot Initialization is complete
         if (opmodeTimer.getElapsedTimeSeconds() > 4) {

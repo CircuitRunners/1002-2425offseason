@@ -1,12 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop;
-
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
-import org.checkerframework.checker.signedness.qual.Constant;
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.mechanisms.MecanumDrive;
@@ -60,6 +56,21 @@ public class MainTeleop extends OpMode {
         double forward = -gamepad1.left_stick_y;
         double right = gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
+
+        // Reset the tracking if the user requests it
+        if (gamepad1.y) {
+            sparkfunOTOS.resetTracking();
+        }
+
+        // Re-calibrate the IMU if the user requests it
+        if (gamepad1.x) {
+            sparkfunOTOS.calibrateImu();
+        }
+
+        // Inform user of available controls
+        telemetry.addLine("Press Y (triangle) on Gamepad to reset tracking");
+        telemetry.addLine("Press X (square) on Gamepad to calibrate the IMU");
+        telemetry.addLine();
 
         driveFieldRelative(forward, right, rotate);
     }

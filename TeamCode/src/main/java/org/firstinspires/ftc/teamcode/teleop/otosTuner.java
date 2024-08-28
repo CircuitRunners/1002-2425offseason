@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import org.firstinspires.ftc.teamcode.support.SparkFunOTOSCorrected;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
